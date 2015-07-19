@@ -29,6 +29,8 @@ using std::ifstream;
 using std::ofstream;
 using std::endl;
 
+template<class T> void printArray2D(vector< vector<T> > &I);
+
 struct LUdcmp
 {
     int n;
@@ -38,6 +40,8 @@ struct LUdcmp
 
     LUdcmp(vector< vector<double> >  &A);
     void solve(vector<double> &b, vector<double> &x);
+    void solve(vector< vector<double> > &B, vector< vector<double> > &X);
+    void inverse(vector< vector<double> > &Ainv);
 
 };
 
@@ -166,6 +170,48 @@ void LUdcmp::solve(vector<double> &b, vector<double> &x)
     }
 }
 
+void LUdcmp::solve(vector< vector<double> > &B, vector< vector<double> > &X)
+{
+    if(B.size() != n || B.size() !=n || B[0].size() !=X[0].size())
+    {
+        throw("LUdcmp::solve bad sizes");
+    }
+
+    vector<double> xx(n,0.0);
+
+    for(int j =0; j < n; j++)
+    {
+        for(int i =0; i < n; i++)
+        {
+            xx[i] = B[i][j];
+        }
+
+        solve(xx,xx);
+
+        for(int i =0; i < n; i++)
+        {
+            X[i][j] = xx[i];
+        }
+    }
+
+}
+
+void LUdcmp::inverse(vector< vector<double> > &Ainv)
+{
+    for(int i =0; i < n; i++)
+    {
+        for(int j =0; j < n; j++)
+        {
+            Ainv[i][j] = 0.0;
+        }
+
+        Ainv[i][i] = 1.0;
+    }
+
+    solve(Ainv,Ainv);
+
+}
+
 
 int main()
 {
@@ -180,13 +226,41 @@ int main()
     vector<double> x(n,0.0);
 
     LUdcmp alu(A);
+
+    printArray2D(A);
+    cout << endl;
+
     alu.solve(b,x);
+    alu.inverse(A);
 
 
-    for(int i =0; i < n; i++)
+    /*for(int i =0; i < n; i++)
     {
         cout << x[i] << ",";
-    }
+    }*/
+
+    cout << endl;
+
+    printArray2D(A);
 
     return 0;
+}
+
+template<class T> void printArray2D(vector< vector<T> > &I)
+{
+    // This is how we iterate using an iterator for 2d vectors
+    typename vector< vector<T> >::iterator row; // Iterator for row of 2d vector
+    typename vector<T>::iterator col; // Iterator for columns of 2d vector
+
+    cout << "Matrix size: " << "[" << I.size() << "x" << I[0].size() << "]" << endl; // print the row and columns
+
+    for(row = I.begin(); row !=I.end(); row++)
+    {
+        for(col = row->begin(); col != row->end(); col++)
+        {
+            cout << *col << ","; // print the value contained in each row of our 2d vector.
+        }
+
+        cout << endl;
+    }
 }
