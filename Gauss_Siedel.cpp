@@ -1,7 +1,5 @@
 #include<iostream>
 #include<vector>
-#include<algorithm>
-#include<fstream>
 #include<cstdlib>
 #include<cmath>
 
@@ -37,7 +35,7 @@ struct GausSied
 
 GausSied::GausSied(vector< vector<double> > &A):nrows(A.size()),tmpA(A),xOld(nrows,0.0)
 {
-    int i,j,k;
+    int i,j;
 
     double sum = 0.0;
 
