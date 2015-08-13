@@ -5,7 +5,8 @@
 
 //Created on 16/7/2015 by Tarmizi Adam. This simple snippet creates
 // Update 25/7/2015
-// Update26/7/2015
+// Update 26/7/2015
+// Update 13/8/2015
 //Create an M-by-M sparse banded matrix by taking the columns of e (vector e) and placing them along the diagonals of D (vector of vector D).
 
 //sparseDiag() create a main diagonal matrix with element e (vector e).
@@ -181,6 +182,12 @@ void bandedMatVecMult(vector< vector<double> > &A, vector<double> &b)
     int rows = A.size();
     int cols = A[0].size();
     int j =0;
+    
+    if(A[0].size() != b.size())
+    {
+        cout << "Multiplication of bad sizes...";
+        exit(EXIT_FAILURE);
+    }
 
     for(int i =0; i < rows; i++)
     {
@@ -229,12 +236,6 @@ void bandedMatVecMult(vector< vector<double> > &A, vector<double> &b)
     for(int i = 0; i < result.size(); i++)
     {
         result[i] = resDiags[i]+reslowerBand[i]+resUpperBand[i];
-    }
-
-    cout <<"lowerBand: " << endl;
-    for(int i =0; i < lowerBand.size(); i++)
-    {
-        cout << lowerBand[i] << endl;
     }
 
     cout <<"result: " << endl;
