@@ -22,7 +22,7 @@ int main()
 
     vector< vector<double> > x = {{1.0,-1.0},{-1.0,1.0}};
 
-    vector< vector<double> > T = kron(a,x);
+    auto T = kron(a,x);
 
     // Display the resulting matrix T
     for(size_t i  = 0; i < T.size(); i++)
